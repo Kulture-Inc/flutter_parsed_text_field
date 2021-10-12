@@ -75,8 +75,8 @@ class Matcher<T> {
     final regexes = [
       ...suggestions.map(displayProp).map((s) => RegExp.escape(s)).sortedDescending(),
       if (alwaysHighlight) '[A-Za-z0-9]+',
-    ].map((s) => '${trigger}$s');
+    ].map((s) => '$trigger$s');
 
-    return '(${regexes.join('|')})';
+    return regexes.isEmpty ? '' : '(${regexes.join('|')})';
   }
 }

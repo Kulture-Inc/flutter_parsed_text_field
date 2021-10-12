@@ -4,17 +4,21 @@ class FlutterParsedTextFieldController extends TextEditingController {
   /// The list of matchers that are to be recognized in this text field
   List<Matcher> matchers = List<Matcher>.empty();
 
-  RegExp get _combinedRegex => RegExp(matchers.map((m) => m.regexPattern).join('|'));
+  RegExp get _combinedRegex => RegExp(matchers.map((m) => m.regexPattern).where((e) => e.isNotEmpty).join('|'));
 
   /// Return the stringified version of your text
   ///
   /// Eg "Hey @Ironman" => "Hey [[@Ironman:uid3000]]"
   String stringify() {
+    if (matchers.isEmpty) {
+      return text;
+    }
+
     return text.splitMapJoin(
       _combinedRegex,
       onMatch: (Match match) {
         final display = match[0]!;
-        final matcher = matchers.firstWhere((m) => RegExp(m.regexPattern).hasMatch(display));
+        final matcher = matchers.firstWhere((m) => m.regexPattern.isNotEmpty && RegExp(m.regexPattern).hasMatch(display));
         final suggestions = matcher.suggestions.where((e) => '${matcher.trigger}${matcher.displayProp(e)}' == display).toList();
 
         if (suggestions.isNotEmpty) {

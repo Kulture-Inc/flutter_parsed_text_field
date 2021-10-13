@@ -282,47 +282,56 @@ class FlutterParsedTextFieldState extends State<FlutterParsedTextField> {
     final renderBox = context.findRenderObject() as RenderBox?;
 
     if (renderBox != null) {
-      var size = renderBox.size;
-
       _hideSuggestionOverlay();
 
       _suggestionOverlay = OverlayEntry(
-        builder: (context) => Positioned(
-          width: size.width,
-          height: (MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom) / 2,
-          child: CompositedTransformFollower(
-            link: _layerLink,
-            followerAnchor: widget.suggestionPosition == SuggestionPosition.above ? Alignment.bottomCenter : Alignment.topCenter,
-            targetAnchor: widget.suggestionPosition == SuggestionPosition.above ? Alignment.topCenter : Alignment.bottomCenter,
-            showWhenUnlinked: false,
-            child: Material(
-              elevation: 4.0,
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                itemCount: suggestions.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final suggestion = suggestions[index];
+        builder: (context) {
+          var globalOffset = renderBox.localToGlobal(Offset.zero);
+          var size = renderBox.size;
+          var spaceBelow = MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom - globalOffset.dy - size.height - 16;
+          var spaceAbove = globalOffset.dy - MediaQuery.of(context).padding.top - kToolbarHeight - 16;
 
-                  if (matcher.suggestionBuilder != null) {
-                    return matcher.suggestionBuilder!(
-                      matcher,
-                      suggestion,
-                    );
-                  }
+          return Positioned(
+            width: size.width,
+            height: widget.suggestionPosition == SuggestionPosition.above ? spaceAbove : spaceBelow,
+            child: CompositedTransformFollower(
+              link: _layerLink,
+              followerAnchor: widget.suggestionPosition == SuggestionPosition.above ? Alignment.bottomCenter : Alignment.topCenter,
+              targetAnchor: widget.suggestionPosition == SuggestionPosition.above ? Alignment.topCenter : Alignment.bottomCenter,
+              showWhenUnlinked: false,
+              offset: Offset(0, widget.suggestionPosition == SuggestionPosition.above ? -8 : 8),
+              child: Align(
+                alignment: widget.suggestionPosition == SuggestionPosition.above ? Alignment.bottomCenter : Alignment.topCenter,
+                child: Material(
+                  elevation: 4,
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    itemCount: suggestions.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final suggestion = suggestions[index];
 
-                  return ListTile(
-                    title: Text('${matcher.trigger}${matcher.displayProp(suggestion)}'),
-                    onTap: () => applySuggestion(
-                      matcher: matcher,
-                      suggestion: suggestion,
-                    ),
-                  );
-                },
+                      if (matcher.suggestionBuilder != null) {
+                        return matcher.suggestionBuilder!(
+                          matcher,
+                          suggestion,
+                        );
+                      }
+
+                      return ListTile(
+                        title: Text('${matcher.trigger}${matcher.displayProp(suggestion)}'),
+                        onTap: () => applySuggestion(
+                          matcher: matcher,
+                          suggestion: suggestion,
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       );
 
       Overlay.of(context)!.insert(_suggestionOverlay!);

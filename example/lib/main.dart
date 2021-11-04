@@ -74,8 +74,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   stringify: (trigger, avenger) {
                     return '[$trigger${avenger.displayName}:${avenger.userId}]';
                   },
-                  parse: (avengerString) {
-                    final avenger = RegExp(r"\[(@([^\]]+)):([^\]]+)\]").firstMatch(avengerString);
+                  parseRegExp: RegExp(r"\[(@([^\]]+)):([^\]]+)\]"),
+                  parse: (regexp, avengerString) {
+                    final avenger = regexp.firstMatch(avengerString);
 
                     if (avenger != null) {
                       return Avenger(
@@ -98,7 +99,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: const TextStyle(color: Colors.blue),
                   stringify: (trigger, hashtag) => hashtag,
                   alwaysHighlight: true,
-                  parse: (hashtagString) => hashtagString.substring(1),
+                  parseRegExp: RegExp(r'(#([\w]+))'),
+                  parse: (regex, hashtagString) => hashtagString,
                 ),
               ],
             ),

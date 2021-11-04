@@ -25,8 +25,13 @@ class Matcher<T> {
   /// stringify = (trigger, suggestion) => '[$trigger${suggestion.displayName}${suggestion.userId}]'
   final String Function(String trigger, dynamic suggestion) stringify;
 
+  /// The [RegExp] that will match stringified suggestions and enable parsing
+  ///
+  /// Eg "Hey [[@Ironman:uid3000]]" => "Hey @Ironman"
+  final RegExp parseRegExp;
+
   /// A function to parse the stringified suggestion back into an object.
-  final T Function(String stringifiedSuggestion) parse;
+  final T Function(RegExp regex, String stringifiedSuggestion) parse;
 
   /// When a suggestion has been tapped and added to the text field, it will be returned.
   /// This allows you to, say, update the #hashtag list when an @mention has been added.
@@ -63,6 +68,7 @@ class Matcher<T> {
     required this.displayProp,
     required this.stringify,
     required this.parse,
+    required this.parseRegExp,
     this.onSuggestionAdded,
     this.style,
     this.suggestionBuilder,

@@ -85,8 +85,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     stringify: (trigger, avenger) {
                       return '[$trigger${avenger.displayName}:${avenger.userId}]';
                     },
-                    parse: (avengerString) {
-                      final avenger = RegExp(r"\[(@([^\]]+)):([^\]]+)\]").firstMatch(avengerString);
+                    parseRegExp: RegExp(r"\[(@([^\]]+)):([^\]]+)\]"),
+                    parse: (regex, avengerString) {
+                      final avenger = regex.firstMatch(avengerString);
 
                       if (avenger != null) {
                         return Avenger(

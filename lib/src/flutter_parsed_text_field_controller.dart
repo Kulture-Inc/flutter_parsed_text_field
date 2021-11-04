@@ -6,6 +6,41 @@ class FlutterParsedTextFieldController extends TextEditingController {
 
   RegExp get _combinedRegex => RegExp(matchers.map((m) => m.regexPattern).where((e) => e.isNotEmpty).join('|'));
 
+  RegExp get _combinedParseRegex => RegExp(matchers.map((m) => m.parseRegExp.pattern).join('|'));
+
+  FlutterParsedTextFieldController() : super();
+
+  /// Return the parsed version of your text
+  ///
+  /// Eg "Hey [[@Ironman:uid3000]]" => "Hey @Ironman"
+  String parse(String stringifiedText) {
+    if (matchers.isEmpty) {
+      return stringifiedText;
+    }
+
+    return stringifiedText.splitMapJoin(
+      _combinedParseRegex,
+      onMatch: (Match match) {
+        final fullMatch = match[0]!;
+        final matcher = matchers.firstWhere((m) => m.parseRegExp.hasMatch(fullMatch));
+        final parsedMatch = matcher.parse(matcher.parseRegExp, fullMatch);
+        final suggestions = matcher.suggestions.where((s) => matcher.idProp(s) == matcher.idProp(parsedMatch)).toList();
+
+        if (suggestions.isNotEmpty) {
+          assert(suggestions.length == 1);
+          return '${matcher.trigger}${matcher.displayProp(suggestions.first)}';
+        }
+
+        if (matcher.alwaysHighlight) {
+          return matcher.parse(matcher.parseRegExp, fullMatch);
+        }
+
+        throw '`suggestions` is empty and `alwaysHighlight` is false.';
+      },
+      onNonMatch: (String text) => text,
+    );
+  }
+
   /// Return the stringified version of your text
   ///
   /// Eg "Hey @Ironman" => "Hey [[@Ironman:uid3000]]"
@@ -35,11 +70,6 @@ class FlutterParsedTextFieldController extends TextEditingController {
       onNonMatch: (String text) => text,
     );
   }
-
-  /// [text] is the default text if the text field
-  FlutterParsedTextFieldController({
-    String? text,
-  }) : super(text: text);
 
   @override
   TextSpan buildTextSpan({required BuildContext context, TextStyle? style, required bool withComposing}) {

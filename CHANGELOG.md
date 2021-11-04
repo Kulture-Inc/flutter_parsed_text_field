@@ -1,3 +1,8 @@
+## v0.1.3 (Nov 03, 2021)
+* enable parsing a stringified text (eg [@Ironman:3000]) into it's display form (eg @Ironman)
+* fix parsing not returning the trigger with always highlight
+* change match order of always highlight
+
 ## v0.1.2 (Oct 13, 2021)
 * position the built in suggestion popup to only take up the space it needs
 * built in suggestion popup won't overflow the screen's bounds

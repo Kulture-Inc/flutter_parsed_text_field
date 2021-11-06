@@ -10,6 +10,8 @@ class FlutterParsedTextFieldController extends TextEditingController {
 
   FlutterParsedTextFieldController() : super();
 
+  set textParsed(val) => text = parse(val);
+
   /// Return the parsed version of your text
   ///
   /// Eg "Hey [[@Ironman:uid3000]]" => "Hey @Ironman"
@@ -32,7 +34,7 @@ class FlutterParsedTextFieldController extends TextEditingController {
         }
 
         if (matcher.alwaysHighlight) {
-          return matcher.parse(matcher.parseRegExp, fullMatch);
+          return '${matcher.trigger}${matcher.displayProp(parsedMatch)}';
         }
 
         throw '`suggestions` is empty and `alwaysHighlight` is false.';

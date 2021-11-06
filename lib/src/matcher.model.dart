@@ -79,8 +79,8 @@ class Matcher<T> {
 
   String get regexPattern {
     final regexes = [
-      ...suggestions.map(displayProp).map((s) => RegExp.escape(s)).sortedDescending(),
       if (alwaysHighlight) '[A-Za-z0-9]+',
+      ...suggestions.map(displayProp).map((s) => RegExp.escape(s)).sortedDescending(),
     ].map((s) => '$trigger$s');
 
     return regexes.isEmpty ? '' : '(${regexes.join('|')})';

@@ -27,7 +27,7 @@ class FlutterParsedTextField extends StatefulWidget {
   final SuggestionPosition? suggestionPosition;
 
   /****************************************************************
-    FLUTTER TEXT FIELD PROPS
+      FLUTTER TEXT FIELD PROPS
    ***************************************************************/
 
   /// {@macro flutter.widgets.editableText.focusNode}
@@ -286,6 +286,10 @@ class FlutterParsedTextFieldState extends State<FlutterParsedTextField> {
 
       _suggestionOverlay = OverlayEntry(
         builder: (context) {
+          if (!renderBox.attached) {
+            return const SizedBox();
+          }
+
           var globalOffset = renderBox.localToGlobal(Offset.zero);
           var size = renderBox.size;
           var spaceBelow = MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom - globalOffset.dy - size.height - 16;

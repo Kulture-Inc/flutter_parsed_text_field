@@ -1,3 +1,6 @@
+## v0.1.5 (Nov 17, 2021)
+* fix overlay throwing error when context is destroyed
+
 ## v0.1.4 (Nov 6, 2021)
 * fix parsing not returning the trigger with always highlight
 * change match order of always highlight

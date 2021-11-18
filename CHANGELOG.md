@@ -1,3 +1,6 @@
+## v0.1.6 (Nov 18, 2021)
+enable matchers to sort results before and after limiting suggestions
+
 ## v0.1.5 (Nov 17, 2021)
 * fix overlay throwing error when context is destroyed
 

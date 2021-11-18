@@ -1,5 +1,16 @@
 part of flutter_parsed_text_field;
 
+enum MatcherSearchStyle {
+  /// does suggestion start with search criteria, case-sensitive
+  startsWith,
+  /// does suggestion contain the search criteria, case-sensitive
+  contains,
+  /// does suggestion start with search criteria, case-insensitive
+  iStartsWith,
+  /// does suggestion contain the search criteria, case-isensitive
+  iContains,
+}
+
 class Matcher<T> {
   /// The single character that will cause the [suggestions] to start appearing
   final String trigger;
@@ -18,6 +29,15 @@ class Matcher<T> {
   /// Eg {userId: 'uid3000', displayName: 'Ironman'}
   /// idProp = (suggestion) => suggestion.displayName
   final String Function(dynamic suggestion) displayProp;
+
+  /// How the search logic should be applied
+  final MatcherSearchStyle searchStyle;
+
+  /// A function to return the prop for sorting the final results BEFORE [FlutterParsedTextField.suggestionLimit] is applied
+  final int Function(dynamic a, dynamic b)? resultSort;
+
+  /// A function to return the prop for sorting the final results AFTER [FlutterParsedTextField.suggestionLimit] is applied
+  final int Function(dynamic a, dynamic b)? finalResultSort;
 
   /// A function which will stringify the suggestion
   ///
@@ -66,6 +86,9 @@ class Matcher<T> {
     required this.suggestions,
     required this.idProp,
     required this.displayProp,
+    this.searchStyle = MatcherSearchStyle.iContains,
+    this.resultSort,
+    this.finalResultSort,
     required this.stringify,
     required this.parse,
     required this.parseRegExp,

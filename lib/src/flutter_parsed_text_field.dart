@@ -367,12 +367,32 @@ class FlutterParsedTextFieldState extends State<FlutterParsedTextField> {
         }
 
         if (matchers.length == 1) {
-          final search = token.substring(1).toLowerCase();
+          final search = token.substring(1);
           final matcher = matchers.first;
 
-          var matchedSuggestions = matcher.suggestions.where((e) => matcher.displayProp(e).toLowerCase().contains(search)).toList();
+          var matchedSuggestions = matcher.suggestions.where((e) {
+            switch (matcher.searchStyle) {
+              case MatcherSearchStyle.startsWith:
+                return matcher.displayProp(e).startsWith(search);
+              case MatcherSearchStyle.contains:
+                return matcher.displayProp(e).contains(search);
+              case MatcherSearchStyle.iStartsWith:
+                return matcher.displayProp(e).toLowerCase().startsWith(search.toLowerCase());
+              case MatcherSearchStyle.iContains:
+                return matcher.displayProp(e).toLowerCase().contains(search.toLowerCase());
+            }
+          }).toList();
+
+          if (matcher.resultSort != null) {
+            matchedSuggestions.sort(matcher.resultSort!);
+          }
+
           if (widget.suggestionLimit != null) {
             matchedSuggestions = matchedSuggestions.take(widget.suggestionLimit!).toList();
+          }
+
+          if (matcher.finalResultSort != null) {
+            matchedSuggestions.sort(matcher.finalResultSort!);
           }
 
           matcher.indexOfMatch = indexOfMatch;

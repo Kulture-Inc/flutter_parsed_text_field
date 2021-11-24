@@ -1,5 +1,8 @@
+## v0.1.7 (Nov 24, 2021)
+* add mention text to resultSort and finalResultSort
+
 ## v0.1.6 (Nov 18, 2021)
-enable matchers to sort results before and after limiting suggestions
+* enable matchers to sort results before and after limiting suggestions
 
 ## v0.1.5 (Nov 17, 2021)
 * fix overlay throwing error when context is destroyed

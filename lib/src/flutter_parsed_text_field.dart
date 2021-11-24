@@ -384,7 +384,7 @@ class FlutterParsedTextFieldState extends State<FlutterParsedTextField> {
           }).toList();
 
           if (matcher.resultSort != null) {
-            matchedSuggestions.sort(matcher.resultSort!);
+            matchedSuggestions.sort((a, b) => matcher.resultSort!(search, a, b));
           }
 
           if (widget.suggestionLimit != null) {
@@ -392,7 +392,7 @@ class FlutterParsedTextFieldState extends State<FlutterParsedTextField> {
           }
 
           if (matcher.finalResultSort != null) {
-            matchedSuggestions.sort(matcher.finalResultSort!);
+            matchedSuggestions.sort((a, b) => matcher.finalResultSort!(search, a, b));
           }
 
           matcher.indexOfMatch = indexOfMatch;

@@ -34,10 +34,14 @@ class Matcher<T> {
   final MatcherSearchStyle searchStyle;
 
   /// A function to return the prop for sorting the final results BEFORE [FlutterParsedTextField.suggestionLimit] is applied
-  final int Function(dynamic a, dynamic b)? resultSort;
+  ///
+  /// [text] is the text that this matchers is currently matching
+  final int Function(String text, dynamic a, dynamic b)? resultSort;
 
   /// A function to return the prop for sorting the final results AFTER [FlutterParsedTextField.suggestionLimit] is applied
-  final int Function(dynamic a, dynamic b)? finalResultSort;
+  ///
+  /// [text] is the text that this matchers is currently matching
+  final int Function(String text, dynamic a, dynamic b)? finalResultSort;
 
   /// A function which will stringify the suggestion
   ///

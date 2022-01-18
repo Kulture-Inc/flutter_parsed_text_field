@@ -54,12 +54,17 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            TextButton(
+              onPressed: () => FocusScope.of(context).unfocus(),
+              child: const Text('Unfocus'),
+            ),
             Text('Recently Added Avenger: $addedAvenger'),
             FlutterParsedTextField(
               controller: flutterParsedTextFieldController,
               suggestionMatches: (matcher, suggestions) {},
               disableSuggestionOverlay: false,
               suggestionLimit: 5,
+              focusNode: ,
               matchers: [
                 Matcher<Avenger>(
                   trigger: "@",

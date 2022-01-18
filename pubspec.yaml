@@ -1,7 +1,7 @@
 name: flutter_parsed_text_field
 description: A flutter package which lets you use styled @mentions and \#hashtags with twitter-like
   suggestions in your TextField.
-version: 0.1.7
+version: 0.1.8
 homepage: https://github.com/Kulture-Inc/flutter_parsed_text_field
 
 environment:

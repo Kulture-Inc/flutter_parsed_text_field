@@ -1,3 +1,6 @@
+## v0.1.8 (Jan 18, 2022)
+* only show overlay when textfield is focused
+
 ## v0.1.7 (Nov 24, 2021)
 * add mention text to resultSort and finalResultSort
 

@@ -64,7 +64,6 @@ class _MyHomePageState extends State<MyHomePage> {
               suggestionMatches: (matcher, suggestions) {},
               disableSuggestionOverlay: false,
               suggestionLimit: 5,
-              focusNode: ,
               matchers: [
                 Matcher<Avenger>(
                   trigger: "@",

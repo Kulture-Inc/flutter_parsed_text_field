@@ -1,3 +1,6 @@
+## v0.1.8 (May 18, 2022)
+* upgrade deps
+
 ## v0.1.8 (Jan 18, 2022)
 * only show overlay when textfield is focused
 

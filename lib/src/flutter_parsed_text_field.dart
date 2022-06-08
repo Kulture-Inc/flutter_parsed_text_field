@@ -262,13 +262,17 @@ class FlutterParsedTextFieldState extends State<FlutterParsedTextField> {
     assert(matcher.indexOfMatch != null && matcher.lengthOfMatch != null);
 
     final replacement = '${matcher.trigger}${matcher.displayProp(suggestion)} ';
-    _controller.text = _controller.value.text.replaceRange(
+    final newText = _controller.value.text.replaceRange(
       matcher.indexOfMatch!,
       matcher.indexOfMatch! + matcher.lengthOfMatch!,
       replacement,
     );
 
-    _controller.selection = TextSelection.fromPosition(TextPosition(offset: matcher.indexOfMatch! + replacement.length));
+    final newSelection = TextSelection.fromPosition(
+        TextPosition(offset: matcher.indexOfMatch! + replacement.length));
+
+    _controller.value =
+        _controller.value.copyWith(text: newText, selection: newSelection);
 
     if (matcher.onSuggestionAdded != null) {
       matcher.onSuggestionAdded!(matcher.trigger, suggestion);
